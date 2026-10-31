@@ -158,3 +158,18 @@ async def test_malformed_response_is_a_feed_error(
     portal(web.Response(text=body))
     with pytest.raises(GtfsFeedError):
         await GzmProvider().async_list_static_feeds(session)
+
+
+async def test_resource_without_a_date_has_no_version(
+    portal: Portal, session: ClientSession
+) -> None:
+    resource = {"id": "x", "format": "ZIP", "url": "https://example.test/a.zip"}
+    portal(web.json_response({"success": True, "result": {"resources": [resource]}}))
+    [ref] = await GzmProvider().async_list_static_feeds(session)
+    assert ref.version is None
+
+
+async def test_undecodable_response_is_a_feed_error(portal: Portal, session: ClientSession) -> None:
+    portal(web.Response(body=b"\xff\xfe", content_type="application/json", charset="utf-8"))
+    with pytest.raises(GtfsFeedError):
+        await GzmProvider().async_list_static_feeds(session)

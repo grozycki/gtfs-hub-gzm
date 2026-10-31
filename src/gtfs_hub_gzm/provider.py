@@ -41,6 +41,8 @@ class GzmProvider(BaseProvider):
                 body = await response.text()
         except (ClientError, TimeoutError) as err:
             raise GtfsConnectionError(f"Cannot reach the data portal: {err}") from err
+        except UnicodeDecodeError as err:
+            raise GtfsFeedError(f"Malformed data portal response: {err}") from err
         return _parse_resources(body)
 
     @override
@@ -84,4 +86,6 @@ def _parse_resource(resource: object) -> StaticFeedRef | None:
     if not isinstance(url, str) or not isinstance(resource_id, str):
         raise GtfsFeedError("Data portal resource has no URL or ID")
     # The portal leaves `hash` empty, so the version comes from these two fields.
-    return StaticFeedRef(url=url, version=f"{resource_id}:{modified}")
+    # Without a date there is no version, so core downloads the file and compares its hash.
+    version = f"{resource_id}:{modified}" if isinstance(modified, str) else None
+    return StaticFeedRef(url=url, version=version)
