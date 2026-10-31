@@ -7,6 +7,7 @@ name = "gtfs-hub-gzm"
 version = "0.1.0"
 description = "GZM provider for gtfs-hub"
 readme = "README.md"
+license = "MIT"
 requires-python = ">=3.13"
 dependencies = ["aiohttp>=3.10", "gtfs-hub>=0.1,<0.2"]
 
@@ -37,8 +38,21 @@ line-length = 100
 src = ["src", "tests"]
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF", "ANN", "TC", "PYI"]
 
 [tool.mypy]
 strict = true
-files = ["src"]
+files = ["src", "tests"]
+warn_unreachable = true
+disallow_any_explicit = true
+disallow_any_unimported = true
+enable_error_code = [
+    "deprecated",
+    "explicit-override",
+    "ignore-without-code",
+    "possibly-undefined",
+    "redundant-expr",
+    "redundant-self",
+    "truthy-bool",
+    "unused-awaitable",
+]

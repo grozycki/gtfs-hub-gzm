@@ -1,7 +1,7 @@
 """Find GZM schedule files, whose names and IDs change with each publication."""
 
 import json
-from typing import Any
+from typing import override
 
 from aiohttp import ClientError, ClientSession, ClientTimeout
 from gtfs_hub import (
@@ -43,6 +43,7 @@ class GzmProvider(BaseProvider):
             raise GtfsConnectionError(f"Cannot reach the data portal: {err}") from err
         return _parse_resources(body)
 
+    @override
     def realtime_endpoints(self) -> RealtimeEndpoints:
         """Return the published endpoints. No alert feed is published."""
         return RealtimeEndpoints(
@@ -52,21 +53,35 @@ class GzmProvider(BaseProvider):
 
 
 def _parse_resources(body: str) -> list[StaticFeedRef]:
+    """Validate a portal response, whose shape is outside any type."""
     try:
-        data: Any = json.loads(body)
-        if not data["success"]:
-            raise GtfsFeedError("The data portal reported a failure")
-        refs = [
-            # The portal leaves `hash` empty, so the version comes from these two fields.
-            StaticFeedRef(
-                url=resource["url"],
-                version=f"{resource['id']}:{resource['last_modified']}",
-            )
-            for resource in data["result"]["resources"]
-            if str(resource["format"]).upper() == "ZIP"
-        ]
-    except (ValueError, KeyError, TypeError) as err:
-        raise GtfsFeedError(f"Malformed data portal response: {err!r}") from err
+        data: object = json.loads(body)
+    except ValueError as err:
+        raise GtfsFeedError(f"Malformed data portal response: {err}") from err
+    if not isinstance(data, dict) or not data.get("success"):
+        raise GtfsFeedError("The data portal reported a failure")
+    result: object = data.get("result")
+    resources: object = result.get("resources") if isinstance(result, dict) else None
+    if not isinstance(resources, list):
+        raise GtfsFeedError("The data portal response lists no resources")
+    refs = [ref for resource in resources if (ref := _parse_resource(resource)) is not None]
     if not refs:
         raise GtfsFeedError("The data portal listed no ZIP resources")
     return refs
+
+
+def _parse_resource(resource: object) -> StaticFeedRef | None:
+    """Return a ZIP resource, or None for any other format."""
+    if not isinstance(resource, dict):
+        raise GtfsFeedError("Malformed data portal resource")
+    kind, url, resource_id, modified = (
+        resource.get(name) for name in ("format", "url", "id", "last_modified")
+    )
+    if not isinstance(kind, str):
+        raise GtfsFeedError("Data portal resource has no format")
+    if kind.upper() != "ZIP":
+        return None
+    if not isinstance(url, str) or not isinstance(resource_id, str):
+        raise GtfsFeedError("Data portal resource has no URL or ID")
+    # The portal leaves `hash` empty, so the version comes from these two fields.
+    return StaticFeedRef(url=url, version=f"{resource_id}:{modified}")

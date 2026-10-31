@@ -3,7 +3,6 @@
 import json
 from collections.abc import AsyncIterator, Callable
 from pathlib import Path
-from typing import Any
 
 import pytest
 from aiohttp import ClientSession, web
@@ -54,11 +53,10 @@ def test_created_from_its_key_through_core() -> None:
     assert "gzm" in list_provider_keys()
     provider = create_provider("gzm")
     assert isinstance(provider, GzmProvider)
-    assert isinstance(provider, Provider)
 
 
 def test_declarations() -> None:
-    provider = GzmProvider()
+    provider: Provider = GzmProvider()
     assert provider.key == "gzm"
     assert provider.stop_key == "stop_code"
     assert provider.attribution is not None
@@ -88,8 +86,7 @@ def test_realtime_endpoints() -> None:
 
 async def test_lists_zip_resources_only(portal: Portal, session: ClientSession) -> None:
     refs = await GzmProvider().async_list_static_feeds(session)
-    sample: dict[str, Any] = json.loads(SAMPLE)
-    resources = sample["result"]["resources"]
+    resources = json.loads(SAMPLE)["result"]["resources"]
     zips = [resource for resource in resources if resource["format"] == "ZIP"]
     assert len(zips) < len(resources)
     assert [ref.url for ref in refs] == [resource["url"] for resource in zips]
