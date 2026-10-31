@@ -36,3 +36,4 @@ Low-power hardware has not been tested yet.
 - **Trip updates:** `stop_sequence` is the next stop. In 2,327 changes of it on 2026-10-31, the vehicle was closer to the previous stop in 85% of cases, at a median of 93 m from it.
 - **Non-passenger points:** every stop time at `[TECH]` and `Granica` points in the checked file has `pickup_type` and `drop_off_type` of 1.
 - **Live departures:** on 2026-10-31 at 13:43, for all 85 passenger stops of bus 11 with the next 4 departures each, 49 of 280 had a prediction, delays ranged from -60 to 600 s, and none was in the past. The feed was 10 s old. Single results were checked against the clock only, not against SDIP.
+- **Feed rhythm:** measured over 4 minutes on 2026-10-31, both headers change about every 10.5 s, a vehicle position changes at a median of 15 s (10 to 25 s), and a trip's delay at a median of 40 s (10 to 95 s). A position message is about 76 KB.
