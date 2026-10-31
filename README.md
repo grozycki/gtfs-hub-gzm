@@ -1,0 +1,35 @@
+# gtfs-hub-gzm
+
+GZM provider for [gtfs-hub](https://github.com/grozycki/gtfs-hub). It finds the current schedule files through the publisher's data portal, because their names and IDs change with each publication.
+
+Data source: GZM ZTM, Creative Commons Attribution. Consumers must show the provider's `attribution`.
+
+## Usage
+
+Install it beside `gtfs-hub`, and core finds it by its key:
+
+```python
+from gtfs_hub import create_provider
+
+provider = create_provider("gzm")
+```
+
+Vehicle identity is not supplied yet, because the survey has not proven it stable.
+
+## Measurements
+
+Measured on 2026-10-31 on an Apple laptop with the real feed: all 10 current files, one selected line (bus 11), 5.5 million `stop_times` rows in the source.
+
+| Measure | Result |
+|---|---|
+| First sync, including download | 20.5 s |
+| Peak process memory | 62 MB |
+| Database size | 14 MB |
+| Repeated sync with unchanged files | 0.1 s, no downloads |
+
+Low-power hardware has not been tested yet.
+
+## Findings
+
+- **Line 11 stops:** all 39 stops on the publisher's timetable page for 2026-10-31 are found. The schedule adds 10 more names: non-passenger points such as `Czeladź Wojkowicka Pętla [TECH]` and `Granica Kato - Sosn (Milowice)`, and stops of other variants in other snapshots, such as `Katowice Arena`. Whether to hide the non-passenger points is decided with departures.
+- **Links:** in one file, `route_url` was filled on all 414 routes and `stop_url` on all 7,138 stops, so no provider code is needed for timetable links. `stop_url` leads to a stop page by `stop_code`.

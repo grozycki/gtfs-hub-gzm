@@ -1,0 +1,84 @@
+{
+ "success": true,
+ "result": {
+  "resources": [
+   {
+    "id": "978b7a41-cf56-411e-8e7e-eb4681bc62c2",
+    "name": "Specyfikacja_plików_GTFS_ZTM_aktual.pdf",
+    "format": "PDF",
+    "last_modified": "2025-01-27T00:08:53.331885",
+    "url": "https://otwartedane.metropoliagzm.pl/dataset/317435cc-0075-4d10-b8ef-6e9b0010e90a/resource/978b7a41-cf56-411e-8e7e-eb4681bc62c2/download/specyfikacja_plikow_gtfs_ztm_aktual.pdf"
+   },
+   {
+    "id": "24ed6b81-8c9c-4552-93fe-ffb2e2368770",
+    "name": "schedule_ZTM_2026.10.31_11735_0005.zip",
+    "format": "ZIP",
+    "last_modified": "2026-10-31T00:09:42.082332",
+    "url": "https://otwartedane.metropoliagzm.pl/dataset/317435cc-0075-4d10-b8ef-6e9b0010e90a/resource/24ed6b81-8c9c-4552-93fe-ffb2e2368770/download/schedule_ztm_2026.10.31_11735_0005.zip"
+   },
+   {
+    "id": "3c8dfb4a-fbeb-44f1-bead-33baf9b7c2f5",
+    "name": "schedule_ZTM_2026.10.31_11736_0020.zip",
+    "format": "ZIP",
+    "last_modified": "2026-10-31T00:09:45.178406",
+    "url": "https://otwartedane.metropoliagzm.pl/dataset/317435cc-0075-4d10-b8ef-6e9b0010e90a/resource/3c8dfb4a-fbeb-44f1-bead-33baf9b7c2f5/download/schedule_ztm_2026.10.31_11736_0020.zip"
+   },
+   {
+    "id": "05274999-db0e-48ef-9fa3-3c7b55b16658",
+    "name": "schedule_ZTM_2026.10.31_11737_0036.zip",
+    "format": "ZIP",
+    "last_modified": "2026-10-31T00:09:46.007989",
+    "url": "https://otwartedane.metropoliagzm.pl/dataset/317435cc-0075-4d10-b8ef-6e9b0010e90a/resource/05274999-db0e-48ef-9fa3-3c7b55b16658/download/schedule_ztm_2026.10.31_11737_0036.zip"
+   },
+   {
+    "id": "15158227-5d78-45e9-ac67-7e9d4bd0fc82",
+    "name": "schedule_ZTM_2026.10.31_11738_0053.zip",
+    "format": "ZIP",
+    "last_modified": "2026-10-31T00:35:10.206263",
+    "url": "https://otwartedane.metropoliagzm.pl/dataset/317435cc-0075-4d10-b8ef-6e9b0010e90a/resource/15158227-5d78-45e9-ac67-7e9d4bd0fc82/download/schedule_ztm_2026.10.31_11738_0053.zip"
+   },
+   {
+    "id": "ba0657fa-517f-4820-a023-773219ee4a5a",
+    "name": "schedule_ZTM_2026.10.31_11739_0119.zip",
+    "format": "ZIP",
+    "last_modified": "2026-10-31T01:05:29.493344",
+    "url": "https://otwartedane.metropoliagzm.pl/dataset/317435cc-0075-4d10-b8ef-6e9b0010e90a/resource/ba0657fa-517f-4820-a023-773219ee4a5a/download/schedule_ztm_2026.10.31_11739_0119.zip"
+   },
+   {
+    "id": "a2c51d43-6766-4e8f-a8ba-a77a66f073c2",
+    "name": "schedule_ZTM_2026.10.31_11740_0146.zip",
+    "format": "ZIP",
+    "last_modified": "2026-10-31T01:25:43.128334",
+    "url": "https://otwartedane.metropoliagzm.pl/dataset/317435cc-0075-4d10-b8ef-6e9b0010e90a/resource/a2c51d43-6766-4e8f-a8ba-a77a66f073c2/download/schedule_ztm_2026.10.31_11740_0146.zip"
+   },
+   {
+    "id": "f21b8f41-c01c-4379-8700-1b3a8eccc37e",
+    "name": "schedule_ZTM_2026.10.31_11741_0209.zip",
+    "format": "ZIP",
+    "last_modified": "2026-10-31T01:51:03.719237",
+    "url": "https://otwartedane.metropoliagzm.pl/dataset/317435cc-0075-4d10-b8ef-6e9b0010e90a/resource/f21b8f41-c01c-4379-8700-1b3a8eccc37e/download/schedule_ztm_2026.10.31_11741_0209.zip"
+   },
+   {
+    "id": "881d10fe-8c15-4054-8afd-8e37fc340b2f",
+    "name": "schedule_ZTM_2026.10.31_11742_0232.zip",
+    "format": "ZIP",
+    "last_modified": "2026-10-31T02:16:20.738528",
+    "url": "https://otwartedane.metropoliagzm.pl/dataset/317435cc-0075-4d10-b8ef-6e9b0010e90a/resource/881d10fe-8c15-4054-8afd-8e37fc340b2f/download/schedule_ztm_2026.10.31_11742_0232.zip"
+   },
+   {
+    "id": "e757eceb-c5f7-4228-bd3b-b399ecf15a77",
+    "name": "schedule_ZTM_2026.10.31_11743_0258.zip",
+    "format": "ZIP",
+    "last_modified": "2026-10-31T02:36:34.755222",
+    "url": "https://otwartedane.metropoliagzm.pl/dataset/317435cc-0075-4d10-b8ef-6e9b0010e90a/resource/e757eceb-c5f7-4228-bd3b-b399ecf15a77/download/schedule_ztm_2026.10.31_11743_0258.zip"
+   },
+   {
+    "id": "381ec3ca-df6a-4e88-a32b-ec6942e3e3b7",
+    "name": "schedule_ZTM_2026.10.31_11744_0320.zip",
+    "format": "ZIP",
+    "last_modified": "2026-10-31T03:06:54.437523",
+    "url": "https://otwartedane.metropoliagzm.pl/dataset/317435cc-0075-4d10-b8ef-6e9b0010e90a/resource/381ec3ca-df6a-4e88-a32b-ec6942e3e3b7/download/schedule_ztm_2026.10.31_11744_0320.zip"
+   }
+  ]
+ }
+}

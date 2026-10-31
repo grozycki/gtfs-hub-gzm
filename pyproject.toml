@@ -1,0 +1,44 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "gtfs-hub-gzm"
+version = "0.1.0"
+description = "GZM provider for gtfs-hub"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = ["aiohttp>=3.10", "gtfs-hub>=0.1,<0.2"]
+
+[project.entry-points."gtfs_hub.providers"]
+gzm = "gtfs_hub_gzm:GzmProvider"
+
+[dependency-groups]
+dev = [
+    "mypy>=1.13",
+    "pytest>=8.3",
+    "pytest-asyncio>=0.24",
+    "ruff>=0.8",
+]
+
+[tool.uv.sources]
+gtfs-hub = { path = "../gtfs-hub", editable = true }
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/gtfs_hub_gzm"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.mypy]
+strict = true
+files = ["src"]
