@@ -73,8 +73,13 @@ def test_capabilities_match_the_survey() -> None:
     assert not capabilities.alerts
 
 
-def test_vehicle_identity_is_not_supplied_yet() -> None:
-    assert GzmProvider().vehicle_key("116_116005627_trip_11_7204619", "", "11_7204619") is None
+def test_vehicle_key_drops_the_trip() -> None:
+    key = GzmProvider().vehicle_key("116_116005627_trip_11_7204619", "", "11_7204619")
+    assert key == "116_116005627"
+
+
+def test_empty_vehicle_id_has_no_key() -> None:
+    assert GzmProvider().vehicle_key("", "", "t") is None
 
 
 def test_realtime_endpoints() -> None:

@@ -46,6 +46,11 @@ class GzmProvider(BaseProvider):
         return _parse_resources(body)
 
     @override
+    def vehicle_key(self, vehicle_id: str, label: str, trip_id: str) -> str | None:
+        """Return the ID without its trip, which changes it at every trip."""
+        return vehicle_id.partition("_trip_")[0] or None
+
+    @override
     def realtime_endpoints(self) -> RealtimeEndpoints:
         """Return the published endpoints. No alert feed is published."""
         return RealtimeEndpoints(

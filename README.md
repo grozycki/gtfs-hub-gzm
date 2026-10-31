@@ -14,7 +14,7 @@ from gtfs_hub import create_provider
 provider = create_provider("gzm")
 ```
 
-Vehicle identity is not supplied yet, because the survey has not proven it stable.
+A vehicle key is derived from the feed, but the provider does not declare it stable, because the survey has not proven that.
 
 ## Measurements
 
