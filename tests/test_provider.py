@@ -12,6 +12,8 @@ from gtfs_hub import (
     GtfsConnectionError,
     GtfsFeedError,
     Provider,
+    TableReader,
+    VehicleClass,
     create_provider,
     list_provider_keys,
 )
@@ -178,3 +180,46 @@ async def test_undecodable_response_is_a_feed_error(portal: Portal, session: Cli
     portal(web.Response(body=b"\xff\xfe", content_type="application/json", charset="utf-8"))
     with pytest.raises(GtfsFeedError):
         await GzmProvider().async_list_static_feeds(session)
+
+
+def _reader(tables: dict[str, list[dict[str, str]]]) -> TableReader:
+    return lambda name: tables.get(name, [])
+
+
+def test_vehicle_classes_of_trips() -> None:
+    long_name = "autobus niskopodłogowy o długości ok.18 metrów"
+    tables = {
+        "vehicles_ext": [
+            {
+                "vehicle_class_id": "14",
+                "vehicle_short_name": "C N",
+                "vehicle_long_name": long_name,
+                "low_floor": "1",
+            },
+            {
+                "vehicle_class_id": "20",
+                "vehicle_short_name": "2x105HF",
+                "vehicle_long_name": "",
+                "low_floor": "0",
+            },
+        ],
+        "trips_ext": [
+            {"trip_id": "a", "vehicle_class_id": "14"},
+            {"trip_id": "b", "vehicle_class_id": "20"},
+            {"trip_id": "c", "vehicle_class_id": "99"},
+        ],
+    }
+    classes = GzmProvider().trip_vehicle_classes(_reader(tables))
+    assert classes == {
+        "a": VehicleClass("C N", 18, 1, True),
+        "b": VehicleClass("2x105HF", None, 2, False),
+    }
+
+
+def test_no_extension_tables() -> None:
+    assert GzmProvider().trip_vehicle_classes(_reader({})) == {}
+
+
+def test_changed_extension_columns_do_not_stop_an_import() -> None:
+    tables = {"vehicles_ext": [{"other": "x"}], "trips_ext": [{"other": "y"}]}
+    assert GzmProvider().trip_vehicle_classes(_reader(tables)) == {}

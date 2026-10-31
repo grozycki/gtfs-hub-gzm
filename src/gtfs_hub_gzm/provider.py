@@ -1,6 +1,8 @@
 """Find GZM schedule files, whose names and IDs change with each publication."""
 
 import json
+import re
+from collections.abc import Mapping
 from typing import override
 
 from aiohttp import ClientError, ClientSession, ClientTimeout
@@ -12,6 +14,8 @@ from gtfs_hub import (
     RealtimeEndpoints,
     StaticFeedRef,
     StopKeyField,
+    TableReader,
+    VehicleClass,
     raise_for_status,
 )
 
@@ -20,6 +24,7 @@ _PORTAL = "https://otwartedane.metropoliagzm.pl"
 _DATASET = "rozklady-jazdy-i-lokalizacja-przystankow-gtfs-wersja-rozszerzona"
 _REALTIME = "https://gtfsrt.transportgzm.pl:5443/gtfsrt/gzm"
 _TIMEOUT = ClientTimeout(total=60)
+_LENGTH = re.compile(r"ok\.\s*(\d+)\s*metr")
 
 
 class GzmProvider(BaseProvider):
@@ -51,12 +56,38 @@ class GzmProvider(BaseProvider):
         return vehicle_id.partition("_trip_")[0] or None
 
     @override
+    def trip_vehicle_classes(self, read: TableReader) -> Mapping[str, VehicleClass]:
+        """Read the planned vehicle, which only the extension files state."""
+        classes = {
+            row["vehicle_class_id"]: _parse_class(row)
+            for row in read("vehicles_ext")
+            if "vehicle_class_id" in row
+        }
+        return {
+            row["trip_id"]: classes[row["vehicle_class_id"]]
+            for row in read("trips_ext")
+            if row.get("vehicle_class_id") in classes and "trip_id" in row
+        }
+
+    @override
     def realtime_endpoints(self) -> RealtimeEndpoints:
         """Return the published endpoints. No alert feed is published."""
         return RealtimeEndpoints(
             trip_updates=f"{_REALTIME}/tripUpdates",
             vehicle_positions=f"{_REALTIME}/vehiclePositions",
         )
+
+
+def _parse_class(row: Mapping[str, str]) -> VehicleClass:
+    """Read a class. Length is stated only in the Polish description."""
+    name = row.get("vehicle_short_name", "").strip()
+    length = _LENGTH.search(row.get("vehicle_long_name", ""))
+    return VehicleClass(
+        name=name,
+        length=int(length[1]) if length else None,
+        units=2 if name.startswith("2x") else 1,
+        low_floor=row.get("low_floor", "").strip() == "1",
+    )
 
 
 def _parse_resources(body: str) -> list[StaticFeedRef]:
