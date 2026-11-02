@@ -34,8 +34,10 @@ class GzmProvider(BaseProvider):
     name = "GZM"
     attribution = "Data source: GZM ZTM, Creative Commons Attribution"
     stop_key: StopKeyField = "stop_code"
-    # From the survey of 2026-10-31. Stable vehicle identity is not proven yet.
-    capabilities = Capabilities(vehicle_positions=True, trip_delays=True, shapes=True)
+    # From the survey of 2026-10-31 to 2026-11-02, recorded in the README.
+    capabilities = Capabilities(
+        vehicle_positions=True, trip_delays=True, shapes=True, stable_vehicle_id=True
+    )
 
     async def async_list_static_feeds(self, session: ClientSession) -> list[StaticFeedRef]:
         """List the ZIP resources of the current dataset."""

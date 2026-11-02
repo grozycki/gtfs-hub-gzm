@@ -67,8 +67,9 @@ def test_declarations() -> None:
 
 def test_capabilities_match_the_survey() -> None:
     capabilities = GzmProvider().capabilities
-    assert capabilities == Capabilities(vehicle_positions=True, trip_delays=True, shapes=True)
-    assert not capabilities.stable_vehicle_id
+    assert capabilities == Capabilities(
+        vehicle_positions=True, trip_delays=True, shapes=True, stable_vehicle_id=True
+    )
     assert not capabilities.bearing
     assert not capabilities.speed
     assert not capabilities.occupancy
@@ -78,6 +79,13 @@ def test_capabilities_match_the_survey() -> None:
 def test_vehicle_key_drops_the_trip() -> None:
     key = GzmProvider().vehicle_key("116_116005627_trip_11_7204619", "", "11_7204619")
     assert key == "116_116005627"
+
+
+def test_vehicle_key_survives_a_new_trip() -> None:
+    provider = GzmProvider()
+    first = provider.vehicle_key("116_116005627_trip_11_7204619", "", "11_7204619")
+    later = provider.vehicle_key("116_116005627_trip_11_7204700", "", "11_7204700")
+    assert first == later
 
 
 def test_empty_vehicle_id_has_no_key() -> None:

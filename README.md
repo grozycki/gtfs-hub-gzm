@@ -14,7 +14,7 @@ from gtfs_hub import create_provider
 provider = create_provider("gzm")
 ```
 
-A vehicle key is derived from the feed, but the provider does not declare it stable, because the survey has not proven that.
+The vehicle key is the feed's vehicle ID without its trip, and the provider declares it stable. The survey below found that one key never ran two trips at once, keys outlive trips and blocks, and fleet numbers match.
 
 ## Measurements
 
