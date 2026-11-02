@@ -25,6 +25,8 @@ _DATASET = "rozklady-jazdy-i-lokalizacja-przystankow-gtfs-wersja-rozszerzona"
 _REALTIME = "https://gtfsrt.transportgzm.pl:5443/gtfsrt/gzm"
 _TIMEOUT = ClientTimeout(total=60)
 _LENGTH = re.compile(r"ok\.\s*(\d+)\s*metr")
+# The length clause, which length already states as a number.
+_LENGTH_CLAUSE = re.compile(r"\s*o długości\b.*$")
 
 
 class GzmProvider(BaseProvider):
@@ -94,12 +96,15 @@ class GzmProvider(BaseProvider):
 def _parse_class(row: Mapping[str, str]) -> VehicleClass:
     """Read a class. Length is stated only in the Polish description."""
     name = row.get("vehicle_short_name", "").strip()
-    length = _LENGTH.search(row.get("vehicle_long_name", ""))
+    long_name = row.get("vehicle_long_name", "").strip()
+    length = _LENGTH.search(long_name)
+    description = _LENGTH_CLAUSE.sub("", long_name)
     return VehicleClass(
         name=name,
         length=int(length[1]) if length else None,
         units=2 if name.startswith("2x") else 1,
         low_floor=row.get("low_floor", "").strip() == "1",
+        description=description[:1].upper() + description[1:] if description else None,
     )
 
 

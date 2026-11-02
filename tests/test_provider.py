@@ -234,9 +234,25 @@ def test_vehicle_classes_of_trips() -> None:
     }
     classes = GzmProvider().trip_vehicle_classes(_reader(tables))
     assert classes == {
-        "a": VehicleClass("C N", 18, 1, True),
+        "a": VehicleClass("C N", 18, 1, True, "Autobus niskopodłogowy"),
         "b": VehicleClass("2x105HF", None, 2, False),
     }
+
+
+def test_description_of_a_tram() -> None:
+    tables = {
+        "vehicles_ext": [
+            {
+                "vehicle_class_id": "4",
+                "vehicle_short_name": "116Nd",
+                "vehicle_long_name": "tramwaj niskopodłogowy",
+                "low_floor": "1",
+            }
+        ],
+        "trips_ext": [{"trip_id": "a", "vehicle_class_id": "4"}],
+    }
+    [planned] = GzmProvider().trip_vehicle_classes(_reader(tables)).values()
+    assert planned.description == "Tramwaj niskopodłogowy"
 
 
 def test_no_extension_tables() -> None:
