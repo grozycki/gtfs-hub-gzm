@@ -88,6 +88,21 @@ def test_vehicle_key_survives_a_new_trip() -> None:
     assert first == later
 
 
+@pytest.mark.parametrize(
+    ("vehicle_id", "number"),
+    [
+        ("108_108001347_trip_11_6930134", "1347"),
+        ("120_1200011_trip_1_7056738", "11"),
+        ("125_12500828_trip_1_7072430", "828"),
+        ("999_123456_trip_1_1", None),
+        ("108_108000000_trip_1_1", None),
+        ("", None),
+    ],
+)
+def test_fleet_number_from_the_key(vehicle_id: str, number: str | None) -> None:
+    assert GzmProvider().vehicle_label(vehicle_id, "") == number
+
+
 def test_empty_vehicle_id_has_no_key() -> None:
     assert GzmProvider().vehicle_key("", "", "t") is None
 

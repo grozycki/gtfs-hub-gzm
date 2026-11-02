@@ -58,6 +58,17 @@ class GzmProvider(BaseProvider):
         return vehicle_id.partition("_trip_")[0] or None
 
     @override
+    def vehicle_label(self, vehicle_id: str, label: str) -> str | None:
+        """Return the fleet number, which ends the key after the carrier prefix it repeats.
+
+        The feed sends no label: `108_108001347` is vehicle 1347.
+        """
+        carrier, _, rest = vehicle_id.partition("_trip_")[0].partition("_")
+        if not carrier or not rest.startswith(carrier):
+            return None
+        return rest.removeprefix(carrier).lstrip("0") or None
+
+    @override
     def trip_vehicle_classes(self, read: TableReader) -> Mapping[str, VehicleClass]:
         """Read the planned vehicle, which only the extension files state."""
         classes = {
