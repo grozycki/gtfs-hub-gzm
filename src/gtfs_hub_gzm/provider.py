@@ -11,6 +11,7 @@ from gtfs_hub import (
     Capabilities,
     GtfsConnectionError,
     GtfsFeedError,
+    Livery,
     RealtimeEndpoints,
     StaticFeedRef,
     StopKeyField,
@@ -40,6 +41,8 @@ class GzmProvider(BaseProvider):
     capabilities = Capabilities(
         vehicle_positions=True, trip_delays=True, shapes=True, stable_vehicle_id=True
     )
+    # GZM vehicles are yellow with black.
+    livery = Livery(body="#FFD200", trim="#1A1A1A")
 
     async def async_list_static_feeds(self, session: ClientSession) -> list[StaticFeedRef]:
         """List the ZIP resources of the current dataset."""

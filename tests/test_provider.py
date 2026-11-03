@@ -11,6 +11,7 @@ from gtfs_hub import (
     Capabilities,
     GtfsConnectionError,
     GtfsFeedError,
+    Livery,
     Provider,
     TableReader,
     VehicleClass,
@@ -262,3 +263,7 @@ def test_no_extension_tables() -> None:
 def test_changed_extension_columns_do_not_stop_an_import() -> None:
     tables = {"vehicles_ext": [{"other": "x"}], "trips_ext": [{"other": "y"}]}
     assert GzmProvider().trip_vehicle_classes(_reader(tables)) == {}
+
+
+def test_livery_is_yellow_and_black() -> None:
+    assert GzmProvider().livery == Livery(body="#FFD200", trim="#1A1A1A")
