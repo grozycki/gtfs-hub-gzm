@@ -4,9 +4,17 @@ GZM provider for [gtfs-hub](https://github.com/grozycki/gtfs-hub). It finds the 
 
 Data source: GZM ZTM, Creative Commons Attribution. Consumers must show the provider's `attribution`.
 
+## Installation
+
+```bash
+pip install gtfs-hub-gzm
+```
+
+It pulls in a matching `gtfs-hub`. Versions follow [Semantic Versioning](https://semver.org/); see the [changelog](CHANGELOG.md).
+
 ## Usage
 
-Install it beside `gtfs-hub`, and core finds it by its key:
+Installed beside `gtfs-hub`, core finds it by its key:
 
 ```python
 from gtfs_hub import create_provider

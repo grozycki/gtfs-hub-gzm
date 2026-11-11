@@ -9,7 +9,26 @@ description = "GZM provider for gtfs-hub"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.13"
+authors = [{ name = "grozycki" }]
+keywords = ["gtfs", "gtfs-realtime", "public-transport", "gzm", "katowice", "silesia"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Framework :: AsyncIO",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Software Development :: Libraries",
+    "Typing :: Typed",
+]
 dependencies = ["aiohttp>=3.10", "gtfs-hub>=0.1,<0.2"]
+
+[project.urls]
+Homepage = "https://github.com/grozycki/gtfs-hub-gzm"
+Issues = "https://github.com/grozycki/gtfs-hub-gzm/issues"
+Changelog = "https://github.com/grozycki/gtfs-hub-gzm/blob/main/CHANGELOG.md"
 
 [project.entry-points."gtfs_hub.providers"]
 gzm = "gtfs_hub_gzm:GzmProvider"
@@ -27,6 +46,9 @@ gtfs-hub = { path = "../gtfs-hub", editable = true }
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/gtfs_hub_gzm"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src", "tests", "README.md", "CHANGELOG.md", "LICENSE"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
