@@ -5,6 +5,7 @@ on:
     branches: [main]
   pull_request:
   workflow_dispatch:
+  workflow_call:
 
 jobs:
   check:
@@ -14,8 +15,12 @@ jobs:
         python-version: ["3.13", "3.14"]
     steps:
       - uses: actions/checkout@v4
-      # The lock file points at ../gtfs-hub, so check out the core beside this repository.
-      - run: git clone --depth 1 https://github.com/grozycki/gtfs-hub.git ../gtfs-hub
+      # The lock file points at ../gtfs-hub. Check out the newest core release inside the
+      # range this package declares, which is what users get from PyPI, not core's main.
+      - run: |
+          tag=$(git ls-remote --tags --refs https://github.com/grozycki/gtfs-hub.git 'v0.1.*' | sed 's#.*refs/tags/##' | sort -V | tail -1)
+          echo "Testing against gtfs-hub $tag"
+          git clone --depth 1 --branch "$tag" https://github.com/grozycki/gtfs-hub.git ../gtfs-hub
       - uses: astral-sh/setup-uv@v5
         with:
           python-version: ${{ matrix.python-version }}
